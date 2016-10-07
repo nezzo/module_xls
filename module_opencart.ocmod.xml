@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+    <name>Module XLS</name>
+    <code>XLS</code>
+    <version>1.0</version>
+    <author>Artur Legusha</author>
+    <link>http://isyms.ru</link>
+    <file path="admin/view/template/sale/order_form.tpl">
+        <operation>
+            <search trim="true|false" index="0"><![CDATA[<?php echo $button_continue; ?>]]></search>
+            <add position="after" offset="1"><![CDATA[
+            <div class="text_xls">     
+                <button type="button" id="button-module_xls" 
+                data-loading-text="Загрузка"
+                 class="btn btn-primary">
+                Скачать отчет
+                </button>
+            </div>    
+            ]]></add>
+        </operation>
+    </file>  
+    <file path="admin/view/template/sale/order_form.tpl">
+        <operation>
+            <search trim="true|false" index="0"><![CDATA[<?php echo $header; ?>]]></search>
+            <add position="after" offset="1"><![CDATA[
+           <link href="../admin/view/stylesheet/style_xls.css" rel="stylesheet">
+    ]]></add>
+        </operation>
+    </file> 
+</modification>
+
