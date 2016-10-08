@@ -1,3 +1,5 @@
+@TODO  надо  разобраться почему не правильно передаются данные (массив) через аякс
+
 <?xml version="1.0" encoding="utf-8"?>
 <modification>
     <name>Module XLS</name>
@@ -7,13 +9,13 @@
     <link>http://isyms.ru</link>
     <file path="admin/view/template/sale/order_form.tpl">
         <operation>
-            <search trim="true|false" index="0"><![CDATA[<?php echo $button_continue; ?>]]></search>
+            <search trim="true|false" index="0"><![CDATA[<?php echo $button_save; ?></button>]]></search>
             <add position="after" offset="1"><![CDATA[
             <div class="text_xls">     
                 <button type="button" id="button-module_xls" 
                 data-loading-text="Загрузка"
                  class="btn btn-primary">
-                Скачать отчет
+                Импорт
                 </button>
             </div>    
             ]]></add>
@@ -27,5 +29,76 @@
     ]]></add>
         </operation>
     </file> 
+    <file path="admin/view/template/sale/order_form.tpl">
+        <operation>
+            <search trim="true|false" index="0"><![CDATA[<?php foreach ($order_products as $order_product) {?>]]></search>
+            <add position="after" offset="1"><![CDATA[
+            <div class="module_xls_product_id" style="display:none;">
+                <?=$order_product['product_id']?>
+            </div>    
+    ]]></add>
+        </operation>
+    </file>
+    <file path="admin/view/template/sale/order_form.tpl">
+        <operation>
+            <search trim="true|false" index="0"><![CDATA[html += '  <td class="text-right">' + product['quantity'] + '</td>';]]></search>
+            <add position="replace" offset="0"><![CDATA[
+               html += '  <td class="text-right module_xls_total_quantity">' + product['quantity'] + '</td>';
+            ]]></add>
+        </operation>
+    </file>
+    <file path="admin/view/template/sale/order_form.tpl">
+        <operation>
+            <search trim="true|false" index="1"><![CDATA[html += '  <td class="text-right">' + product['total'] + '</td>';]]></search>
+            <add position="replace" offset="0"><![CDATA[
+          html += '  <td class="text-right module_xls_total">' + product['total'] + '</td>';   
+    ]]></add>
+        </operation>
+    </file>
+     
+    <file path="admin/view/template/sale/order_form.tpl">
+        <operation>
+            <search trim="true|false" index="0"><![CDATA[<?php echo $button_save; ?></button>]]></search>
+            <add position="after" offset="1"><![CDATA[
+          <script>
+            $(document).ready(function(){
+                $('#button-module_xls').click(function(){
+                    var rows_table = document.getElementById('total').getElementsByTagName('tr').length - 2;
+                    var mas = [];
+                
+                for(var i=0; i<rows_table; ++i){
+                    for(var j=i; j<i; ++j){
+                        var product_id = $.trim($('.module_xls_product_id').text());
+                        var quantity = $('.module_xls_total_quantity').text();
+                        var total = $('.module_xls_total').text();
+                        mas[i][j] = [product_id,quantity,total]; 
+                        console.log(mas[i][j]);
+                    }
+                    
+                }
+                
+                    
+                
+                    $.ajax({
+                       url : 'view/template/module/module_xls/module_xls.php',
+                       type : 'POST',
+                       dataType:'text',
+                       data :{
+                          mas:mas
+                        },
+                        success:function(data){
+                          //location.href= data;
+                         // console.log(data);
+                        },
+                        error:function (xhr, ajaxOptions, thrownError){
+                        console.log(thrownError); //выводим ошибку
+                        }  
+                    });  
+                });
+            });
+            </script> 
+    ]]></add>
+        </operation>
+    </file>
 </modification>
 
