@@ -1,5 +1,3 @@
-@TODO  надо  разобраться почему не правильно передаются данные (массив) через аякс
-
 <?xml version="1.0" encoding="utf-8"?>
 <modification>
     <name>Module XLS</name>
@@ -62,38 +60,39 @@
             <add position="after" offset="1"><![CDATA[
           <script>
             $(document).ready(function(){
+                /*По клику получаем нужные нам данные (ид товара, количество и общую сумму)*/
                 $('#button-module_xls').click(function(){
+                
+                /*узнаем сколько полей с товаром в заказе для того что бы запустить цикл*/
                     var rows_table = document.getElementById('total').getElementsByTagName('tr').length - 2;
-                    var mas = [];
+                    var product_id = [];
+                    var quantity = [];
+                    var total = [];
                 
+                /*С помощью цикла мы заносим нужные нам данные в массивы и отправляем на сервер */
                 for(var i=0; i<rows_table; ++i){
-                    for(var j=i; j<i; ++j){
-                        var product_id = $.trim($('.module_xls_product_id').text());
-                        var quantity = $('.module_xls_total_quantity').text();
-                        var total = $('.module_xls_total').text();
-                        mas[i][j] = [product_id,quantity,total]; 
-                        console.log(mas[i][j]);
-                    }
-                    
-                }
-                
-                    
-                
+                        product_id.push($.trim($('.module_xls_product_id').toArray()[i].innerHTML));
+                        quantity.push($('.module_xls_total_quantity').toArray()[i].innerHTML);
+                        total.push($('.module_xls_total').toArray()[i].innerHTML);
+                 }       
                     $.ajax({
                        url : 'view/template/module/module_xls/module_xls.php',
                        type : 'POST',
                        dataType:'text',
                        data :{
-                          mas:mas
+                          product_id:product_id,
+                          quantity:quantity,
+                          total:total,
+                          rows_table:rows_table
                         },
                         success:function(data){
-                          //location.href= data;
-                         // console.log(data);
+                          location.href= data;
                         },
                         error:function (xhr, ajaxOptions, thrownError){
                         console.log(thrownError); //выводим ошибку
                         }  
-                    });  
+                    }); 
+                                  
                 });
             });
             </script> 
