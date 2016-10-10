@@ -29,7 +29,7 @@
     </file> 
     <file path="admin/view/template/sale/order_form.tpl">
         <operation>
-            <search trim="true|false" index="0"><![CDATA[<?php foreach ($order_products as $order_product) {?>]]></search>
+            <search trim="true|false" index="0"><![CDATA[<?php foreach ($order_products as $order_product) { ?>]]></search>
             <add position="after" offset="1"><![CDATA[
             <div class="module_xls_product_id" style="display:none;">
                 <?=$order_product['product_id']?>
@@ -63,8 +63,9 @@
                 /*По клику получаем нужные нам данные (ид товара, количество и общую сумму)*/
                 $('#button-module_xls').click(function(){
                 
-                /*узнаем сколько полей с товаром в заказе для того что бы запустить цикл*/
-                    var rows_table = document.getElementById('total').getElementsByTagName('tr').length - 2;
+                /*узнаем сколько полей с товаром в заказе для того что бы запустить цикл (Цыфру ставим взависимости 
+                от количества полей в 5 пункте заказа)*/
+                    var rows_table = document.getElementById('total').getElementsByTagName('tr').length - 4;
                     var product_id = [];
                     var quantity = [];
                     var total = [];
@@ -72,7 +73,7 @@
                 /*С помощью цикла мы заносим нужные нам данные в массивы и отправляем на сервер */
                 for(var i=0; i<rows_table; ++i){
                         product_id.push($.trim($('.module_xls_product_id').toArray()[i].innerHTML));
-                        quantity.push($('.module_xls_total_quantity').toArray()[i].innerHTML);
+                       quantity.push($('.module_xls_total_quantity').toArray()[i].innerHTML);
                         total.push($('.module_xls_total').toArray()[i].innerHTML);
                  }       
                     $.ajax({
