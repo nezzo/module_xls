@@ -1,7 +1,7 @@
 .text_xls {
-    float: left;
-    width: 115px;
+    float: right;
+    width: 75px;
     position: relative;
-    bottom: 35px;
-    margin-left: 17%;
+    bottom: 0;
+    margin-right: 10px;
 }

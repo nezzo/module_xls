@@ -5,21 +5,21 @@
     <version>1.0</version>
     <author>Artur Legusha</author>
     <link>http://isyms.ru</link>
-    <file path="admin/view/template/sale/order_form.tpl">
+    <file path="admin/view/template/sale/order_info.tpl">
         <operation>
-            <search trim="true|false" index="0"><![CDATA[<?php echo $button_save; ?></button>]]></search>
+            <search trim="true|false" index="0"><![CDATA[<div class="container-fluid">]]></search>
             <add position="after" offset="1"><![CDATA[
             <div class="text_xls">     
                 <button type="button" id="button-module_xls" 
                 data-loading-text="Загрузка"
                  class="btn btn-primary">
-                Импорт
+                Экспорт
                 </button>
             </div>    
             ]]></add>
         </operation>
     </file>  
-    <file path="admin/view/template/sale/order_form.tpl">
+    <file path="admin/view/template/sale/order_info.tpl">
         <operation>
             <search trim="true|false" index="0"><![CDATA[<?php echo $header; ?>]]></search>
             <add position="after" offset="1"><![CDATA[
@@ -27,45 +27,52 @@
     ]]></add>
         </operation>
     </file> 
-    <file path="admin/view/template/sale/order_form.tpl">
+    <file path="admin/view/template/sale/order_info.tpl">
         <operation>
-            <search trim="true|false" index="0"><![CDATA[<?php foreach ($order_products as $order_product) { ?>]]></search>
+            <search trim="true|false" index="0"><![CDATA[<?php foreach ($products as $product) { ?>]]></search>
             <add position="after" offset="1"><![CDATA[
             <div class="module_xls_product_id" style="display:none;">
-                <?=$order_product['product_id']?>
+                <?=$product['product_id']?>
             </div>    
     ]]></add>
         </operation>
     </file>
-    <file path="admin/view/template/sale/order_form.tpl">
+    <file path="admin/view/template/sale/order_info.tpl">
         <operation>
-            <search trim="true|false" index="0"><![CDATA[html += '  <td class="text-right">' + product['quantity'] + '</td>';]]></search>
+            <search trim="true|false" index="0"><![CDATA[<td class="text-right"><?php echo $product['quantity']; ?></td>]]></search>
             <add position="replace" offset="0"><![CDATA[
-               html += '  <td class="text-right module_xls_total_quantity">' + product['quantity'] + '</td>';
+                <td class="text-left module_xls_total_quantity"><?php echo $product['quantity']; ?></td>
             ]]></add>
         </operation>
     </file>
-    <file path="admin/view/template/sale/order_form.tpl">
+    <file path="admin/view/template/sale/order_info.tpl">
         <operation>
-            <search trim="true|false" index="1"><![CDATA[html += '  <td class="text-right">' + product['total'] + '</td>';]]></search>
+            <search trim="true|false" index="0"><![CDATA[<td class="text-right"><?php echo $product['total']; ?></td>]]></search>
             <add position="replace" offset="0"><![CDATA[
-          html += '  <td class="text-right module_xls_total">' + product['total'] + '</td>';   
+                <td class="text-right module_xls_total"><?php echo $product['total']; ?></td>
     ]]></add>
         </operation>
     </file>
-     
-    <file path="admin/view/template/sale/order_form.tpl">
+     <file path="admin/view/template/sale/order_info.tpl">
         <operation>
-            <search trim="true|false" index="0"><![CDATA[<?php echo $button_save; ?></button>]]></search>
-            <add position="after" offset="1"><![CDATA[
+            <search trim="true|false" index="3"><![CDATA[<tbody>]]></search>
+            <add position="replace" offset="0"><![CDATA[
+                <tbody id="total">
+    ]]></add>
+        </operation>
+    </file>
+         
+    <file path="admin/view/template/sale/order_info.tpl">
+        <operation>
+            <search trim="true|false" index="0"><![CDATA[</table>]]></search>
+            <add position="after" offset="10"><![CDATA[
           <script>
             $(document).ready(function(){
                 /*По клику получаем нужные нам данные (ид товара, количество и общую сумму)*/
                 $('#button-module_xls').click(function(){
                 
-                /*узнаем сколько полей с товаром в заказе для того что бы запустить цикл (Цыфру ставим взависимости 
-                от количества полей в 5 пункте заказа)*/
-                    var rows_table = document.getElementById('total').getElementsByTagName('tr').length - 4;
+                /* Узнаем количество полей с товаром по классу module_xls_product_id*/
+                    var rows_table = $('.module_xls_product_id').length;
                     var product_id = [];
                     var quantity = [];
                     var total = [];
